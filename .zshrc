@@ -56,7 +56,7 @@ plugins=(git, base16shell)
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -118,16 +118,12 @@ export ZSH_THEME_GIT_PROMPT_SUFFIX=' '
 export ZSH_THEME_GIT_PROMPT_DIRTY='*'
 export PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}%{$terminfo[bold]$FG[250]%} $(git_prompt_info)%{$fg[red]%}]%{$reset_color%} '
 
-# PATH
-export PATH=$PATH:$HOME/.local/bin/
-
 # ALIAS
 alias vim="nvim -u ~/.nvimrc"
 alias ls="exa -al --color=always --group-directories-first"
 alias df='df -h'
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/data/code/dotfiles-bare/ --work-tree=$HOME'
-
+alias dotfiles='/usr/bin/git --git-dir=$HOME/data/code/dotfiles/ --work-tree=$HOME'
 
 source ~/.zshrc.local
 #
