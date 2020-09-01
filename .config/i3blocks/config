@@ -1,0 +1,81 @@
+command=/usr/lib/i3blocks/$BLOCK_NAME
+separator_block_width=15
+color=#3b4252
+markup=none
+
+#[mpd]
+#command=music
+#interval=1
+
+[openvpn]
+label=vpn
+command=~/.local/bin/i3blocks-contrib/openvpn/openvpn
+interval=20
+
+[keymap]
+label=⌨
+command=xkb-switch
+interval=1
+
+[battery]
+# 🔋 battery; U+1F50B
+# 🔌 electric plug; U+1F50C
+command=battery
+interval=20
+
+
+[network]
+command=ifstat | grep enp0 | awk '{print "U: "$8/1000.0 "Kb/s D: "$6/1000.0 "Kb/s"}'
+interval=10
+
+[arch-update]
+label=📦
+command=pacman -Qu | wc -l
+interval=10
+# label=Updates:
+# interval=3600
+# markup=pango
+
+[cpu_usage]
+label=cpu
+command=~/.local/bin/i3blocks-contrib/cpu_usage/cpu_usage
+interval=1
+
+[shutdown-menu]
+label=cpu
+
+
+# [ram]
+# label=
+# command=/usr/libexec/i3blocks/memory | grep -E -o '[0-9].[0-9]?G'
+# interval=30
+#
+# [disk-home]
+# label=
+# command=df -h -P -l $HOME | awk '/\/.*/ { print $3; exit 0 }'
+# interval=30
+
+[wifi]
+# no signal ❌
+label=📶
+command=i3wifi wl4ps0
+interval=5
+
+[vpn]
+command=[ -e $BLOCK_INSTANCE ] && (echo up; echo up; echo #00FF00) || (echo down; echo down; echo #FF0000)
+interval=10
+instance=/proc/sys/net/ipv4/conf/tun0
+
+[volume-pulseaudio]
+# 🔇 muted speaker; U+1F507
+# 🔈 speaker low volume; U+1F508
+# 🔉 speaker medium volume; U+1F509
+# 🔊 speaker high volume; U+1F50A
+# label=🔊
+command=volume
+interval=1
+
+[time]
+command=date '+%a, %d %b %H:%M'
+interval=5
+
