@@ -1,0 +1,9 @@
+{
+    "firefox": "firefox",
+    "Chromium": "chrome",
+    "st-256color": "terminal",
+    "Thunderbird": "envelope",
+    "signal": "comment",
+    "Foxit Reader": "file-pdf",
+    "Emacs": "code-branch"
+}
