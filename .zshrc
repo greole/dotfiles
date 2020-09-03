@@ -52,7 +52,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git, vi-mode)
-plugins=(git, base16shell)
+plugins=(git, base16shell, ssh-agent)
 
 # User configuration
 
