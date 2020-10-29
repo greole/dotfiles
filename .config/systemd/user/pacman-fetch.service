@@ -1,0 +1,9 @@
+[Unit]
+Description=Fetch upstream package infos
+
+[Service]
+Type=oneshot
+ExecStart=pacman -Sy
+
+[Install]
+WantedBy=
