@@ -33,6 +33,7 @@ font pango:Ubuntu 14
 floating_modifier Mod1
 
 # start a terminal
+bindsym $mod+i exec /home/go/.local/bin/flash_window
 bindsym $mod+Return exec /usr/local/bin/st
 bindsym $mod+Escape exec /usr/bin/systemctl suspend
 
@@ -40,7 +41,7 @@ bindsym $mod+Escape exec /usr/bin/systemctl suspend
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+Tab exec rofi -show combi -theme base16-dracula
+bindsym $mod+Tab exec rofi -show combi
 
 # Program start ups
 bindsym $mod+e exec emacs
