@@ -43,7 +43,7 @@ bindsym $mod+q kill
 bindsym $mod+Tab exec rofi -show combi -theme base16-dracula
 
 # Program start ups
-bindsym $mod+e exec emacs
+bindsym $mod+e exec "emacsclient -c"
 
 # Lock screen
 bindsym $mod+x exec "lock.sh"
