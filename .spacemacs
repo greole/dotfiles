@@ -30,7 +30,8 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(yaml
+   '(csv
+     yaml
      lua
      markdown
      vimscript
@@ -65,6 +66,8 @@ values."
      neotree
      ;; writeroom
      debug
+     keyboard-layout
+     gpu
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configu:ration for these
@@ -167,7 +170,7 @@ values."
    ;;                             :width normal
    ;;                             :powerline-scale 1.1)
    dotspacemacs-default-font '("Ubuntu Mono"
-                               :size 18
+                               :size 24
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -310,7 +313,8 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-enable-server t
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -341,7 +345,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq-default c-basic-offset 4)
   (setq-default tab-width 4)
   (setq-default spacemacs-org-agenda-display-filename-only nil)
+  (setq org-superstar-headline-bullets-list '("◉" "◈" "○" "▷" "▶" "■" "◆" "▲" ))
+  (setq org-superstar-leading-bullet " ")
+  (add-to-list 'default-frame-alist '(font . "-DAMA-Ubuntu Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1"))
+  ;; (add-to-list 'default-frame-alist
+  ;;             '(font . "-ADBE-Source Code Pro-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1"))
   )
+
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -352,14 +362,14 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 ;; (define-key evil-insert-state-map (kbd "TAB") 'evil-complete-next)
 ;; (define-key evil-insert-state-map (kbd "TAB") 'dabbrev-completion)
-;; (global-company-mode t)
 ;; (setq-default company-idle-delay nil)
 ;; (define-key evil-insert-state-map (kbd "TAB") 'company-complete)
-(ac-config-default)
-(auto-complete)
+(global-company-mode t)
+;; (ac-config-default)
+;; (auto-complete)
 ;; (company)
 (spacemacs/toggle-highlight-long-lines-globally-on)
-(define-key ac-mode-map (kbd "TAB") 'auto-complete)
+;; (define-key ac-mode-map (kbd "TAB") 'auto-complete)
 (nyan-mode t)
 
 ;; set enviroment variable, needed for cgal compilations 
@@ -385,7 +395,7 @@ you should place your code here."
 
 
 ;; PACKAGE CONFIGS
-(add-to-list 'load-path "~/data/code/emacs-configs/")
+(add-to-list 'load-path "~/.config/emacs/")
 
 (require 'mu4e-config)
 (require 'org-config)
@@ -508,48 +518,32 @@ you should place your code here."
 ;; (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
 (spacemacs/set-leader-keys  "Ss"  'fd-switch-dictionary)
 ;; (define-key flyspell-mode-map (kbd "SPC-s-c") #'flyspell-correct-wrapper)
+(setq-default dotspacemacs-configuration-layers
+              '((spell-checking :variables enable-flyspell-auto-completion t)))
 
 
+;; hide #+TITLE:
+(setq org-hidden-keywords '(title))
+;; set basic title font
+(set-face-attribute 'org-level-8 nil :weight 'bold :inherit 'default)
+;; Low levels are unimportant => no scaling
+(set-face-attribute 'org-level-7 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-6 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-5 nil :inherit 'org-level-8)
+(set-face-attribute 'org-level-4 nil :inherit 'org-level-8)
+;; Top ones get scaled the same as in LaTeX (\large, \Large, \LARGE)
+(set-face-attribute 'org-level-3 nil :inherit 'org-level-8 :height 1.0) ;\large
+(set-face-attribute 'org-level-2 nil :inherit 'org-level-8 :height 1.0) ;\Large
+(set-face-attribute 'org-level-1 nil :inherit 'org-level-8 :height 1.7) ;\LARGE
+;; Only use the first 4 styles and do not cycle.
+(setq org-cycle-level-faces nil)
+(setq org-n-level-faces 4)
+;; Document Title, (\huge)
+(set-face-attribute 'org-document-title nil
+                    :height 2.074
+                    :foreground 'unspecified
+                    :inherit 'org-level-8)
 
-;; (with-eval-after-load 'mu4e 
-;;   (
-;; (defun org-mu4e-store-link ()
-;; "Store a link to a mu4e query or message."
-;; (cond
-;;  ;; storing links to queries
-;;  ((eq major-mode 'mu4e-headers-mode)
-;;   (let* ((query (mu4e-last-query))
-;;       desc link)
-;; (org-store-link-props :type "mu4e" :query query)
-;; (setq
-;;   desc (concat "mu4e:query:" query)
-;;   link desc)
-;; (org-add-link-props :link link :description desc)
-;; link))
-;;   ;; storing links to messages
-;; ((eq major-mode 'mu4e-view-mode)
-;;   (let* ((msg  (mu4e-message-at-point))
-;;      (msgid   (or (plist-get msg :message-id) "<none>"))
-;;      (from (car (car (mu4e-message-field msg :from))))
-;;      (to (car (car (mu4e-message-field msg :to))))
-;;      (subject (mu4e-message-field msg :subject))
-;;      link)
-;;    (setq link (concat "mu4e:msgid:" msgid))
-;;    (org-store-link-props :type "mu4e" :link link
-;;              :message-id msgid)
-;;    (setq link (concat "mu4e:msgid:" msgid))
-;;    (org-store-link-props 
-;;     :type "mu4e" :from from :to to :subject subject
-;;           :message-id msgid)
-
-;;    (org-add-link-props :link link
-;;            :description (funcall org-mu4e-link-desc-func msg))
-;;    link))))
-
-;; ;; (org-add-link-type "mu4e" 'org-mu4e-open)
-;; (org-link-set-parameters "mu4e" 'org-mu4e-open)
-;; (add-hook 'org-store-link-functions 'org-mu4e-store-link)
-;; ))
 
 ;; (let ((org-super-agenda-groups
 ;;        '()))
@@ -564,10 +558,6 @@ you should place your code here."
 
 (add-hook 'auto-save-hook 'save-buffer-if-visiting-file)
 
-;; auto-complete
-;; (setq auto-complete-mode)
-
-;; org-gcal
 
 (setq org-gcal-client-id "65441525054-8q8q2dpo9tcrq8kg9cmfmd979f040917.apps.googleusercontent.com"
       org-gcal-client-secret "fKmY7xbTa6MOTxgc2HWS_Zn0"
@@ -613,6 +603,10 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  )
 
+;; Keyboard
+(setq-default dotspacemacs-configuration-layers
+              '((keyboard-layout :variables kl-layout 'colemak-hnei)))
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -626,12 +620,10 @@ This function is called at the very end of Spacemacs initialization."
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(custom-safe-themes
-   (quote
-    ("7f89ec3c988c398b88f7304a75ed225eaac64efa8df3638c815acc563dfd3b55" default)))
+   '("7f89ec3c988c398b88f7304a75ed225eaac64efa8df3638c815acc563dfd3b55" default))
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
-   (quote
-    (yaml-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-theme-theme dracula-theme gruvbox-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+   '(csv-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme gruvbox-theme-theme dracula-theme gruvbox-theme ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
