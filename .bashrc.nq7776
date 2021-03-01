@@ -1,0 +1,7 @@
+parse_git_branch() {
+	     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+     }
+
+module load devel/cmake/3.18
+module load devel/cuda/11.0
+module load compiler/gnu/9.3
