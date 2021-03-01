@@ -1,0 +1,1 @@
+/home/go/data/Configs/dotfiles/vimrc
