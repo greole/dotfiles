@@ -1,66 +1,67 @@
 " Note: Skip initialization for vim-tiny or vim-small.
 if 0 | endif
-
+"dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
 endif
 
 " Required:
-set runtimepath+=~/.vim/bundle/neobundle.vim/
+set runtimepath+=/home/kit/scc/nq7776/.vim/bundles/repos/github.com/Shougo/dein.vim
 
 " Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
+call dein#begin('/home/kit/scc/nq7776/.vim/bundles')
 
-" Let NeoBundle manage NeoBundle
+" Let dein manage dein
 " Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" My Bundles here:
-" Refer to |:NeoBundle-examples|.
-" Note: You don't set neobundle setting in .gvimrc!
-
-
-" Required:
-filetype plugin indent on
+call dein#add('/home/kit/scc/nq7776/.vim/bundles/repos/github.com/Shougo/dein.vim')
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
-"NeoBundle 'VundleVim/Vundle.vim'
-NeoBundle 'tComment'
-NeoBundle 'Tabular'
-" NeoBundle 'command-t'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'ZoomWin'
-" NeoBundle 'Syntastic'
-NeoBundle 'ervandew/supertab'
-NeoBundle 'tpope/vim-fugitive'
-" NeoBundle 'dag/vim2hs'
-NeoBundle 'morhetz/gruvbox'
-" NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'kassio/neoterm'
-NeoBundle 'Ron89/thesaurus_query.vim'
-NeoBundle 'takac/vim-hardtime'
-NeoBundle 'tpope/vim-surround'
-" NeoBundle 'vim-syntastic/syntastic'
-NeoBundle 'morhetz/gruvbox'
-NeoBundle 'KeitaNakamura/neodark.vim'
-NeoBundle 'tyrannicaltoucan/vim-quantum'
-NeoBundle 'chriskempson/base16-vim'
-NeoBundle 'rhysd/vim-clang-format'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'twerth/ir_black'
-NeoBundle 'LeonB/vim-previous-buffer'
-NeoBundle 'kien/rainbow_parentheses.vim'
-NeoBundle 'neomake/neomake'
-" NeoBundle 'w0rp/ale.git'
-NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'severin-lemaignan/vim-minimap'
-NeoBundle 'arcticicestudio/nord-vim'
+"call dein#add( 'VundleVim/Vundle.vim')
+call dein#add('tomtom/tcomment_vim')
+" call dein#add( 'Tabular')
+" call dein#add( 'command-t')
+call dein#add('bronson/vim-trailing-whitespace')
+" call dein#add( 'ZoomWin')
+" call dein#add( 'Syntastic')
+call dein#add('ervandew/supertab')
+call dein#add('tpope/vim-fugitive')
+" call dein#add( 'dag/vim2hs')
+call dein#add('morhetz/gruvbox')
+" call dein#add( 'eagletmt/ghcmod-vim')
+call dein#add('kassio/neoterm')
+call dein#add('Ron89/thesaurus_query.vim')
+call dein#add('takac/vim-hardtime')
+call dein#add('tpope/vim-surround')
+" call dein#add( 'vim-syntastic/syntastic')
+call dein#add('KeitaNakamura/neodark.vim')
+call dein#add('tyrannicaltoucan/vim-quantum')
+call dein#add('chriskempson/base16-vim')
+call dein#add('rhysd/vim-clang-format')
+call dein#add('nanotech/jellybeans.vim')
+call dein#add('twerth/ir_black')
+call dein#add('LeonB/vim-previous-buffer')
+call dein#add('kien/rainbow_parentheses.vim')
+call dein#add('neomake/neomake')
+" call dein#add( 'w0rp/ale.git')
+call dein#add('vim-airline/vim-airline')
+call dein#add('vim-airline/vim-airline-themes')
+call dein#add('severin-lemaignan/vim-minimap')
+call dein#add('arcticicestudio/nord-vim')
 
+" Required:
+call dein#end()
 
-NeoBundleCheck
-call neobundle#end()
+" Required:
+filetype plugin indent on
+syntax enable
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
+
+"End dein Scripts-------------------------
 
 syntax on
 set nobackup
@@ -75,11 +76,12 @@ colorscheme nord
 " let g:neodark#use_256color = 1
 " let g:neodark#background = '#202020'
 set background=dark
-set termguicolors
+" set termguicolors
 " colorscheme base16-outrun-dark
 let g:quantum_black=1
 
 let g:hardtime_default_on = 0
+
 
 cnoreabbrev W w
 cnoreabbrev Q q
