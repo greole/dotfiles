@@ -6,14 +6,14 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/home/kit/scc/nq7776/.vim/bundles/repos/github.com/Shougo/dein.vim
+set runtimepath+=/home/go/.vim/dein
 
 " Required:
-call dein#begin('/home/kit/scc/nq7776/.vim/bundles')
+call dein#begin('~/.vim/bundles')
 
 " Let dein manage dein
 " Required:
-call dein#add('/home/kit/scc/nq7776/.vim/bundles/repos/github.com/Shougo/dein.vim')
+call dein#add('~/.vim/bundles/repos/github.com/Shougo/dein.vim')
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
