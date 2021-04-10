@@ -13,7 +13,7 @@ call dein#begin('~/.vim/bundles')
 
 " Let dein manage dein
 " Required:
-call dein#add('~/.vim/bundles/repos/github.com/Shougo/dein.vim')
+call dein#add('Shougo/dein.vim')
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
