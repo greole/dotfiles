@@ -82,5 +82,8 @@
             (:prefix-map ("g" . "git")
                     (:when (featurep! :tools magit)
                      :desc " magit pull" "p" #'magit-pull
-                     :desc " magit push" "P" #'magit-push)
-                    ))
+                     :desc " magit push" "P" #'magit-push)))
+
+
+(global-subword-mode 1)           ; Iterate through CamelCase words
+(setq +ivy-buffer-preview t)      ; Show a preview of a buffer
