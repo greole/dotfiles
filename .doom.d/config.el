@@ -95,9 +95,12 @@
             (:prefix-map ("g" . "git")
                     (:when (featurep! :tools magit)
                      :desc " magit pull" "p" #'magit-pull
-                     :desc " magit push" "P" #'magit-push)
-                    ))
+                     :desc " magit push" "P" #'magit-push)))
 
 ;; Setup for writeroom
 (setq +zen-text-scale 1.1 )
 (add-hook 'writeroom-mode-hook (lambda () (display-line-numbers-mode -1)))
+
+
+(global-subword-mode 1)           ; Iterate through CamelCase words
+(setq +ivy-buffer-preview t)      ; Show a preview of a buffer
