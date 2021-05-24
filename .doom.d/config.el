@@ -32,7 +32,20 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/data/notes/")
+(setq org-agenda-files (list "~/data/notes/"))
+
+(after! org (setq org-hide-emphasis-markers t))
+(after! org
+  (setq org-log-done t)
+  (setq org-log-into-drawer t))
+
+(use-package! org-archive
+  :after org
+  :config
+  (setq org-archive-location "archive.org::datetree/"))
+
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -84,3 +97,7 @@
                      :desc " magit pull" "p" #'magit-pull
                      :desc " magit push" "P" #'magit-push)
                     ))
+
+;; Setup for writeroom
+(setq +zen-text-scale 1.1 )
+(add-hook 'writeroom-mode-hook (lambda () (display-line-numbers-mode -1)))
