@@ -1,4 +1,4 @@
-;;; -*- no-byte-compile: t; -*-
+
 ;;; $DOOMDIR/packages.el
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
@@ -48,5 +48,3 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-
-(package! colemak-evil)
