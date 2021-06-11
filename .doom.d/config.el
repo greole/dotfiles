@@ -34,6 +34,8 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/data/notes/")
 (setq org-agenda-files (list "~/data/notes/"))
+(setq org-roam-directory  "~/data/notes/")
+(setq doom-scratch-dir  "~/data/notes/scratch")
 
 (after! org (setq org-hide-emphasis-markers t))
 (after! org
@@ -100,6 +102,7 @@
 ;; Setup for writeroom
 (setq +zen-text-scale 1.1 )
 (add-hook 'writeroom-mode-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'writeroom-mode-hook (lambda () (indicate-empty-lines 0)))
 
 
 (global-subword-mode 1)           ; Iterate through CamelCase words
