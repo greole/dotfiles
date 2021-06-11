@@ -1,5 +1,6 @@
 (provide 'org-config)
 
+
 (setq org-agenda-files '("~/Dropbox/gtd"))
 
 (setq org-capture-templates '(
@@ -87,4 +88,4 @@ text and copying to the killring."
 (setq org-super-agenda-groups
       '( (:auto-category t)      ))
 
-(setq org-todo-keywords '((sequence "PROJ(p)" "TODO(t)" "WAITING(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)" "DELEGATED(o)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "WAITING(w)" "NEXT(n)" "|" "DONE(d)" "CANCELLED(c)" "DELEGATED(o)")))
