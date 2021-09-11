@@ -86,7 +86,11 @@
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
 
 (setq projectile-current-project-on-switch 'keep)
+(setq projectile-project-search-path '("~/data/notes/" "~/data/code/" ))
+(setq projectile-switch-project-action #'projectile-dired)
 ;; (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
+
+(setq auth-sources '("~/.authinfo"))
 
 ;; Set cuda dir
 (setenv "CPATH" (concat (getenv "CPATH") ":/opt/cuda/targets/x86_64-linux/include"))
