@@ -33,8 +33,9 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/data/notes/")
-(setq org-agenda-files (list "~/data/notes/"))
-(setq org-roam-directory  "~/data/notes/")
+(setq org-agenda-files (directory-files-recursively "~/data/notes/" "\\.org$"))
+
+(setq org-roam-directory  "~/ownCloud/notes/")
 (setq doom-scratch-dir  "~/data/notes/scratch")
 
 (after! org (setq org-hide-emphasis-markers t))
@@ -42,11 +43,19 @@
   (setq org-log-done t)
   (setq org-log-into-drawer t))
 
+(setq org-todo-keywords '((sequence "TODO(t)" "PROJ(p)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)" "CANC(c)")))
+
 (use-package! org-archive
   :after org
   :config
   (setq org-archive-location "archive.org::datetree/"))
 
+
+(setq lsp-pylsp-plugins-yapf-enabled t)
+(setq lsp-pyls-plugins-yapf-enabled t)
+
+;; Whether display the perspective name. Non-nil to display in the mode-line.
+(setq doom-modeline-persp-name t)
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
