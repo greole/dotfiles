@@ -54,6 +54,16 @@ COMPLETION_WAITING_DOTS="true"
 #plugins=(git, vi-mode)
 plugins=(git, base16shell, ssh-agent)
 
+ssh() {
+    if [ "$TMUX" ]; then
+        tmux rename-window "$(echo $* | cut -d . -f 1)"
+        command ssh "$@"
+        tmux set-window-option automatic-rename "on" 1>/dev/null
+    else
+        command ssh "$@"
+    fi
+}
+
 # User configuration
 
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
