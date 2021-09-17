@@ -43,6 +43,18 @@ bindsym $mod+q kill
 # start dmenu (a program launcher)
 bindsym $mod+Tab exec rofi -show combi
 
+
+bindsym $mod+w mode "password"
+mode "password" {
+    bindsym p exec "/home/go/.local/bin/passScript.sh"
+    bindsym t exec "/home/go/.local/bin/passScript.sh --type"
+    bindsym q exec "/home/go/.local/bin/passScript.sh --otp"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+
 # Program start ups
 bindsym $mod+e exec "emacsclient -c"
 
