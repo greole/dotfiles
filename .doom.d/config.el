@@ -57,6 +57,8 @@
 ;; Whether display the perspective name. Non-nil to display in the mode-line.
 (setq doom-modeline-persp-name t)
 
+;; Whether display the perspective name. Non-nil to display in the mode-line.
+(setq workspaces-on-switch-project-behavior t)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -97,6 +99,7 @@
 (setq projectile-current-project-on-switch 'keep)
 (setq projectile-project-search-path '("~/data/notes/" "~/data/code/" ))
 (setq projectile-switch-project-action #'projectile-dired)
+(setq counsel-projectile-switch-project-action #'counsel-projectile-switch-project-action-dired)
 ;; (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
 
 (setq auth-sources '("~/.authinfo"))
