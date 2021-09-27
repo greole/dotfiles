@@ -54,12 +54,6 @@
 (setq lsp-pylsp-plugins-yapf-enabled t)
 (setq lsp-pyls-plugins-yapf-enabled t)
 
-;; Whether display the perspective name. Non-nil to display in the mode-line.
-(setq doom-modeline-persp-name t)
-
-;; Whether display the perspective name. Non-nil to display in the mode-line.
-(setq workspaces-on-switch-project-behavior t)
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -99,7 +93,18 @@
 (setq projectile-current-project-on-switch 'keep)
 (setq projectile-project-search-path '("~/data/notes/" "~/data/code/" ))
 (setq projectile-switch-project-action #'projectile-dired)
-(setq counsel-projectile-switch-project-action #'counsel-projectile-switch-project-action-dired)
+(setq +workspaces-switch-project-function (lambda (dir)
+                                                (dired dir)
+                                                (split-window-right)
+                                                (magit-status)
+                                                ))
+;; (setq +workspaces-switch-project-function #'dired)
+;; Whether display the perspective name. Non-nil to display in the mode-line.
+(setq doom-modeline-persp-name t)
+
+;; Whether display the perspective name. Non-nil to display in the mode-line.
+(setq +workspaces-on-switch-project-behavior t)
+
 ;; (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
 
 (setq auth-sources '("~/.authinfo"))
