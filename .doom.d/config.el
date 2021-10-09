@@ -105,6 +105,10 @@
 ;; Whether display the perspective name. Non-nil to display in the mode-line.
 (setq +workspaces-on-switch-project-behavior t)
 
+(map! :leader
+      :desc "call project-search"
+      "e" #'+ivy/project-search)
+
 ;; (define-key projectile-mode-map [?\s-f] 'projectile-find-file)
 
 (setq auth-sources '("~/.authinfo"))
