@@ -1,0 +1,101 @@
+# User specific environment
+PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH
+export HISTSIZE=20000
+export CUDA_VERSION=11.6
+
+# Module loads
+#module load devel/python/3.9
+module load compiler/gnu/11
+#module load toolkit/rocm/4.3.1
+module load devel/cuda/$CUDA_VERSION
+module load devel/python
+module load mpi/openmpi/4.1
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
+$HOME/.local/lib64:\
+$HOME/.local/lib:\
+/software/all/devel/cuda/$CUDA_VERSION/lib64/
+
+export LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib64:$HOME/.local/lib
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:$HOME/.local/include
+#export PROJECT_GROUP="haicore-project-scc"
+#export PROJECT_GROUP="hk-project-test-sparsela"
+#export PROJECT="/home/hk-project-test-sparsela/eq4036"
+#export HKPROJECT="/hkproject/hk-project-test-sparsela/eq4036"
+#export SLURM_JOB_ACCOUNT="haicore-project-scc"
+export SLURM_JOB_ACCOUNT="hk-project-test-sparsela"
+
+# PETSc Related
+export PETSC_DIR=$HOME/data/code/petsc
+export PETSC_ARCH=arch-linux-c-opt
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
+
+# OGL Related
+export OGL_MAKE_GENERATOR=Ninja
+export OGL_CMAKE_FLAGS="-DGINKGO_BUILD_CUDA=ON -DGINKGO_BUILD_OMP=ON -DGINKGO_FORCE_GPU_AWARE_MPI=ON"
+export OGL_BUILD_TYPE=Release
+export OGL_LABBOOK=$HOME/data/code/ogl_labbook
+export LidDrivenCavity=$OGL_LABBOOK/base/Lid_driven_cavity-3d/
+export OGL_LABBOOK_ASSETS=$OGL_LABBOOK/assets
+export GINGKO_CHECKOUT_VERSION=bc63aa25
+
+
+# OBR Related
+export GINKGO_EXECUTOR=cuda
+export NCPUS=76 # set it to 4 so that 8 * NCPUS gives a full node
+export NGPUS=4 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NCPUS_PER_GPU=10 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NCPU_PER_GPU=10 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NNODES=10
+export OBR_RUN_CMD="mpirun --bind-to core --map-by core -np {np} {solver} -parallel -case {path}/case >  {path}/case/{solver}_{timestamp}.log 2>&1"
+export OBR_HOSTNAME=Horeka
+export NOSE_LABBOOK=/home/hk-project-test-fine/eq4036/data/code/polimi-nose-labbook
+
+#export SlurmSubmitTemplateGPU="sbatch --partition accelerated -J {short_path}_N{number_nodes}d{sub_domains} --nodes {number_nodes} --account haicore-project-scc -t 720 --gpus-per-node {tasks} --tasks-per-node {tasks} run.sh"
+export SlurmSubmitTemplateGPU="sbatch \
+  -t 720 \
+  -J N{number_nodes}d{sub_domains}{short_path} \
+  --partition accelerated \
+  --nodes 1 \
+  --account haicore-project-scc \
+  --gpus-per-node 4 \
+  --tasks-per-node 40 \
+  run.sh"
+
+export SlurmRunTemplateGPU="mpirun \
+    --bind-to core \
+    --map-by core \
+        bash -c 'export CUDA_VISIBLE_DEVICES=\$((\$OMPI_COMM_WORLD_LOCAL_RANK/\$OGL_CPU_PER_GPU));\
+        {executable} -parallel' > log"
+
+export SlurmSubmitTemplateCPU="sbatch --partition cpuonly -J N{number_nodes}d{sub_domains} --nodes {number_nodes} -t 720 --tasks-per-node {tasks} run.sh"
+
+export SlurmRunTemplateCPU="mpirun --bind-to core --map-by core {executable} -parallel > log"
+
+# OpenFOAM
+source /home/hk-project-test-fine/eq4036/OpenFOAM/openfoam/etc/bashrc
+
+# Python related
+# PYTHON_ROOT_DIR for gingko cmake to avoid finding intel python
+export Python_ROOT=/usr
+export Python_ROOT_DIR=/usr
+export PYTHONPATH=/home/hk-project-test-fine/eq4036/.local/lib/python3.8/site-packages:/home/hk-project-test-fine/eq4036/data/code/ginkgo/build/python-bindings/third_party
+
+function take {
+    mkdir -p $1
+    cd $1
+}
+
+# aliases
+alias alloc_mi100="salloc -p amd-milan-mi100 -N 1 -t 30"
+alias alloc_v100="salloc -p intel-clv100  -N 1 -t 30"
+alias alloc_cpu="salloc -p dev_cpuonly  -N 1 -t 30"
+alias alloc_gpu="salloc -p dev_accelerated  -N 1 -t 60 --gpus-per-node 4 --ntasks 4"
+alias alloc_gpu2="salloc -p accelerated  -N 1 -t 60 --gpus-per-node 4 --tasks-per-node 76 --account=hk-project-test-sparsela"
+alias alloc_gpu3="salloc -p accelerated  -N 1 -t 60 --gpus-per-node 4 --tasks-per-node 76 --account=haicore-project-scc"
+alias alloc_gpu4="salloc -p dev_accelerated  -N 1 -t 60 --gpus-per-node 4 --tasks-per-node 76 --account=haicore-project-scc"
+alias lbook="cd $OGL_LABBOOK"
+alias nbook="cd $NOSE_LABBOOK"
+alias python="/usr/bin/python3.8"
+alias squeue.py="python3 ~/.local/bin/squeue.py"
