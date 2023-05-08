@@ -1,4 +1,5 @@
 call plug#begin()
+" see https://github.com/junegunn/vim-plug
 " The default plugin directory will be as follows:
 "   - Vim (Linux/macOS): '~/.vim/plugged'
 "   - Vim (Windows): '~/vimfiles/plugged'
