@@ -1,5 +1,4 @@
 call plug#begin()
-" see https://github.com/junegunn/vim-plug
 " The default plugin directory will be as follows:
 "   - Vim (Linux/macOS): '~/.vim/plugged'
 "   - Vim (Windows): '~/vimfiles/plugged'
@@ -10,6 +9,10 @@ call plug#begin()
 "
 Plug 'arcticicestudio/nord-vim'
 Plug 'numToStr/Comment.nvim'
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'folke/which-key.nvim'
 
 call plug#end()
 
@@ -41,3 +44,9 @@ let mapleader=" "
 
 nnoremap <leader>sv :source $HOME/.config/nvim/init.vim<CR>
 
+" telescope
+" Using Lua functions
+nnoremap <leader><leader> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>e <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
