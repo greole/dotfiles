@@ -54,16 +54,6 @@ COMPLETION_WAITING_DOTS="true"
 #plugins=(git, vi-mode)
 plugins=(git, base16shell, ssh-agent)
 
-ssh() {
-    if [ "$TMUX" ]; then
-        tmux rename-window "$(echo $* | cut -d . -f 1)"
-        command ssh "$@"
-        tmux set-window-option automatic-rename "on" 1>/dev/null
-    else
-        command ssh "$@"
-    fi
-}
-
 # User configuration
 
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
@@ -129,13 +119,10 @@ export ZSH_THEME_GIT_PROMPT_DIRTY='*'
 export PS1='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}%{$terminfo[bold]$FG[250]%} $(git_prompt_info)%{$fg[red]%}]%{$reset_color%} '
 
 # ALIAS
-alias vim="nvim -u ~/.nvimrc"
-alias ls="exa -al --color=always --group-directories-first"
 alias df='df -h'
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/data/code/dotfiles/ --work-tree=$HOME'
 
-source ~/.zshrc.local
 #
 export EDITOR=vim
 export VISUAL=$EDITOR
@@ -149,3 +136,5 @@ export TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 
 # auto startx
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+
+source ~/.zshrc.$HOSTNAME

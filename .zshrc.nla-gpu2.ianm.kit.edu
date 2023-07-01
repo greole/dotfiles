@@ -1,0 +1,93 @@
+export OGL_MAKE_GENERATOR=Ninja
+export OGL_CMAKE_FLAGS="-DGINKGO_BUILD_HIP=ON -DGINKGO_BUILD_OMP=ON"
+export GINKGO_EXECUTOR=HIP
+export OGL_LABBOOK=$HOME/data/code/ogl_labbook
+export NOSE_LABBOOK=$HOME/data/code/ogl_nose
+export PYTHONPATH=$HOME/.local/lib/python3.6/site-packages
+
+#module load mpi/mvapich2-gdr-x86_64
+#export ROCM_VERSION=4.5.0
+export ROCM_VERSION=5.0.2
+#export ROCM_VERSION=5.2.0
+module load rocm/rocm-$ROCM_VERSION
+
+export OPENCL_INCLUDE_DIR=/opt/rocm-$ROCM_VERSION/opencl/include
+export OGL_MAKE_GENERATOR=Ninja
+export OGL_BUILD_TYPE=Release # Release # Debug
+export OGL_CMAKE_FLAGS="-DGINKGO_BUILD_HIP=ON -DGINKGO_FORCE_GPU_AWARE_MPI=ON"
+
+export OGL_LABBOOK=$HOME/data/code/ogl_labbook
+export LidDrivenCavity=$OGL_LABBOOK/base/Lid_driven_cavity-3d/
+export OGL_LABBOOK_ASSETS=$OGL_LABBOOK/assets
+export NOSE_LABBOOK=/home/hk-project-test-fine/eq4036/data/code/polimi-nose-labbook
+
+# EXASIM_PROJECT_RELATED
+export GINKGO_EXECUTOR=hip
+export NCPUS=32 # set it to 4 so that 8 * NCPUS gives a full node
+export NGPUS=8 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NCPUS_PER_GPU=4 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NCPU_PER_GPU=4 # 8 set it to one since we cant scale accross multiple nodes on this machine
+export NNODES=1
+export EXASIM_SYSTEM_NAME=nla
+export EXASIM_DATA_REPOSITORY=/home/greole/data/code/exasim_project/benchmark_data
+export OBR_RUN_CMD="mpirun --bind-to core --map-by core -np {np} {solver} -parallel -case {path}/case >  {path}/case/{solver}_{timestamp}.log 2>&1"
+
+
+alias lbook='cd $OGL_LABBOOK'
+alias ezshrc='vim $HOME/.zshrc'
+export PATH=$PATH:~/arm/forge/21.0.3/bin/
+export PATH=$PATH:~/.local/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:~/.local/lib
+export LIBRARY_PATH=$LIBRARY_PATH:/opt/rocm-$ROCM_VERSION/lib
+export PETSC_DIR=$HOME/data/code/petsc/
+export PETSC_ARCH=arch-linux-c-opt
+export LIBRARY_PATH=$LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
+#$HOME/.local
+#export MPI_ARCH_INC="-isystem $MPI_ROOT/include"
+#export MPI_ARCH_LIBS="-L$MPI_ROOT/lib64 -lmpi"
+#export MPI_ARCH_FLAGS="-DOMPI_SKIP_MPICXX"
+#export MPI_ROOT="/opt/mvapich2/gdr/2.3.6/no-mcast/no-openacc/rocm4.5/mofed5.0/mpirun/gnu9.3.1"
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:$MPI_ARC_INC:$OPENCL_INCLUDE_DIR
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$HOME/.local/include:$OPENCL_INCLUDE_DIR
+
+
+#source ~/OpenFOAM/openfoam/etc/bashrc
+
+export LIBRARY_PATH=$LIBRARY_PATH:$HOME/data/code/ginkgo/builds/develop/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.local/lib64
+
+
+debug_run_function () {
+	mpirun -np 4 pimpleFoam -parallel > log 2>&1 &
+	sleep 1
+    top -b -n1 | grep pimpleFoam > /tmp/pids
+    awk '{ print $1 }' ORS='\n' /tmp/pids > /tmp/npids
+    for pid in $(< /tmp/npids)
+	do 
+		tmux new-window gdb -p $pid
+	done
+    rm /tmp/npids
+}
+
+gdb_continue () {
+	tmux send-keys -t 0:1 "c" Enter
+	tmux send-keys -t 0:2 "c" Enter
+	tmux send-keys -t 0:3 "c" Enter
+	tmux send-keys -t 0:4 "c" Enter
+}
+
+gdb_next () {
+	tmux send-keys -t 0:1 "n" Enter
+	tmux send-keys -t 0:2 "n" Enter
+	tmux send-keys -t 0:3 "n" Enter
+	tmux send-keys -t 0:4 "n" Enter
+}
+
+alias debug_run=debug_run_function #'mpirun -np 8 icoFoam -parallel  &; sleep 10; gdb -p $(cat /tmp/mpi_debug.pid)'
+alias vim=nvim
+alias zshrc="nvim $HOME/.zshrc"
+alias vimrc="nvim $HOME/.config/nvim/init.vim"
+
+export CYCLIC_CASE=LES/periodicPlaneChannel
