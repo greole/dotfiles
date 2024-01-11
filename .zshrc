@@ -137,4 +137,5 @@ export TIMEFMT='%J   %U  user %S system %P cpu %*E total'$'\n'\
 # auto startx
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
 
-source ~/.zshrc.$HOSTNAME
+export HOST=$(echo $HOSTNAME|cut -c 1-3)
+source $HOME/.zshrc.$HOST
